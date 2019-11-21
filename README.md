@@ -20,9 +20,9 @@ To run the following codes, users should have the following packages,
 + Pix2Pix
 
 ## Outputs
-GAN |  LSGAN  | DCGAN | CGAN
+GAN <br>-Generator, Discriminator|  LSGAN <br>-Least Squares Loss | DCGAN <br>-Deep Convolutional Layer | CGAN <br>-Condition Embedding
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://github.com/zcemycl/Matlab-GAN/blob/master/GAN/GANmnist.gif" width="200" > |<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/LSGAN/LSGANresult.jpg" width="200" >|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/DCGAN/DCGANmnist.gif" width="200" >|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/CGAN/CGANmnist.gif" width="200" >
-ACGAN|InfoGAN|AAE|CycleGAN
+ACGAN <br>-Classification|InfoGAN <br>-Continuous, Discrete Codes|AAE <br>-Encoder, Decoder, Discriminator|CycleGAN
 <img src="https://github.com/zcemycl/Matlab-GAN/blob/master/ACGAN/ACGANresult.jpg" width="200"> |<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/InfoGAN/InfoGANmnist.gif" width="200" >|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/AAE/AAEmnist.gif" width="200">|
 DiscoGAN|Pix2Pix
