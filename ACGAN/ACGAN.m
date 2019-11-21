@@ -1,5 +1,5 @@
 clear all; close all; clc;
-%% Deep Convolutional Generative Adversarial Network
+%% Auxiliary Classifier Generative Adversarial Network
 %% Load Data
 load('mnistAll.mat')
 trainX = preprocess(mnist.train_images); 
