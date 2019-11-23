@@ -16,16 +16,112 @@ settings.beta2 = 0.999; settings.maxepochs = 200;
 %% Discriminator (conv)
 [paramsDis,stDis] = InitializeDis(settings,df);
 %% Train
-[dly,stGen] = Generator(gpdl(ones(256,256,1,16),'SSCB'),...
-    paramsGen,stGen);
-[dlyo,stDis] = Discriminator(dly,paramsDis,stDis);
+% average Gradient and average Gradient squared holders
+avgG.Dis = []; avgGS.Dis = []; avgG.Gen = []; avgGS.Gen = [];
+numIterations = floor(size(trainX,4)/settings.batch_size);
+out = false; epoch = 0; global_iter = 0;
+while ~out
+    tic; 
+    shuffleid = randperm(size(trainX,4));
+    trainXshuffle = trainX(:,:,:,shuffleid);
+    trainYshuffle = trainY(:,:,:,shuffleid);
+    fprintf('Epoch %d\n',epoch) 
+    for i=1:numIterations
+        global_iter = global_iter+1;
+        XBatch=gpdl(trainXshuffle(:,:,:,i),'SSCB');
+        YBatch=gpdl(trainYshuffle(:,:,:,i),'SSCB');
 
+        [GradGen,GradDis,stGen,stDis] = ...
+                dlfeval(@modelGradients,XBatch,YBatch,...
+                paramsGen,paramsDis,stGen,stDis);
+
+        % Update Discriminator network parameters
+        [paramsDis,avgG.Dis,avgGS.Dis] = ...
+            adamupdate(paramsDis, GradDis, ...
+            avgG.Dis, avgGS.Dis, global_iter, ...
+            settings.lrD, settings.beta1, settings.beta2);
+
+        % Update Generator network parameters
+        [paramsGen,avgG.Gen,avgGS.Gen] = ...
+            adamupdate(paramsGen, GradGen, ...
+            avgG.Gen, avgGS.Gen, global_iter, ...
+            settings.lrG, settings.beta1, settings.beta2);
+        
+        if i==1 || rem(i,20)==0
+            idxPlot = [1,201,401];
+            XPlot = gpdl(trainX(:,:,:,idxPlot),'SSCB');
+            YPlot = gpdl(trainY(:,:,:,idxPlot),'SSCB');
+            progressplot(XPlot,YPlot,paramsGen,stGen);
+            
+            if i==1 || rem(i,200)==0
+                h = gcf;
+                % Capture the plot as an image 
+                frame = getframe(h); 
+                im = frame2im(frame); 
+                [imind,cm] = rgb2ind(im,256); 
+                % Write to the GIF File 
+                if epoch == 0
+                  imwrite(imind,cm,'p2pfacade.gif','gif', 'Loopcount',inf); 
+                else 
+                  imwrite(imind,cm,'p2pfacade.gif','gif','WriteMode','append'); 
+                end 
+            end
+        end
+        
+    end
+
+    elapsedTime = toc;
+    disp("Epoch "+epoch+". Time taken for epoch = "+elapsedTime + "s")
+    epoch = epoch+1;
+    if epoch == settings.maxepochs
+        out = true;
+    end    
+end
 
 %% Helper Functions
+%% progressplot
+function progressplot(x,y,paramsGen,stGen)
+genImg = Generator(x,paramsGen,stGen);
+
+fig = gcf;
+if ~isempty(fig.Children)
+    delete(fig.Children)
+end
+
+subplot(3,1,1)
+I = imtile(gatext(x),'GridSize',[1,3]);
+I = rescale(I);
+imagesc(I)
+set(gca,'visible','off')
+title("Input")
+
+subplot(3,1,2)
+I = imtile(gatext(genImg),'GridSize',[1,3]);
+I = rescale(I);
+imagesc(I)
+set(gca,'visible','off')
+title("Output")
+
+subplot(3,1,3)
+I = imtile(gatext(y),'GridSize',[1,3]);
+I = rescale(I);
+imagesc(I)
+set(gca,'visible','off')
+title("Truth")
+
+drawnow;
+end
 %% modelGradients
 function [GradGen,GradDis,stGen,stDis]=modelGradients(x,y,paramsGen,paramsDis,stGen,stDis)
-fakeA = Generator(x,paramsGen,stGen);
+pairYes = Discriminator(cat(3,y,x),paramsDis,stDis);
+[fakeA,stGen] = Generator(x,paramsGen,stGen);
+[pairNo,stDis] = Discriminator(cat(3,fakeA,x),paramsDis,stDis); 
 
+d_loss=-.5*(mean(log(pairYes+eps)+log(1-pairNo+eps),'all'));
+g_loss=-.5*mean(log(pairNo+eps),'all')+100*mean(abs(y-fakeA),'all'); 
+
+GradGen = dlgradient(g_loss,paramsGen,'RetainData',true);
+GradDis = dlgradient(d_loss,paramsDis);
 end
 %% Generator
 function [dly,st] = Generator(dlx,params,st)
@@ -180,7 +276,7 @@ end
 end
 
 function [paramsDis,stDis] = InitializeDis(settings,df)
-paramsDis.CNW1 = dlarray(initializeGaussian([4,4,settings.image_size(3),df]));
+paramsDis.CNW1 = dlarray(initializeGaussian([4,4,settings.image_size(3)+1,df]));
 paramsDis.CNb1 = dlarray(zeros(df,1,'single'));
 paramsDis.CNW2 = dlarray(initializeGaussian([4,4,df,2*df]));
 paramsDis.CNb2 = dlarray(zeros(2*df,1,'single'));

@@ -2,7 +2,7 @@ clear all; close all; clc;
 %% Load Data
 load('LatCode.mat')
 load('ImgLib.mat')
-trainX = pnglist;
+trainX = preprocesscode(pnglist);
 trainY = preprocess(jpglist);
 %% Settings
 gf = 64; df = 64;
@@ -16,14 +16,20 @@ settings.beta2 = 0.999; settings.maxepochs = 200;
 %% Discriminator (conv)
 [paramsDis,stDis] = InitializeDis(settings,df);
 %% Train
-[dly,stGen] = Generator(gpdl(ones(256,256,1,16),'SSCB'),...
-    paramsGen,stGen);
-[dlyo,stDis] = Discriminator(dly,paramsDis,stDis);
+dlx = gpdl(ones(256,256,1,16),'SSCB');
+[dly,stGen] = Generator(dlx,paramsGen,stGen);
+[dlyo,stDis] = Discriminator(cat(3,dly,dlx),paramsDis,stDis);
 
 
 %% Helper Functions
 %% modelGradients
 function [GradGen,GradDis,stGen,stDis]=modelGradients(x,y,paramsGen,paramsDis,stGen,stDis)
+pairYes = Discriminator(cat(3,y,x),paramsDis,stDis);
+[fakeA,stGen] = Generator(x,paramsGen,stGen);
+[pairNo,stDis] = Discriminator(cat(3,fakeA,x),paramsDis,stDis); 
+
+d_loss=-.5*(mean(log(pairYes+eps)+log(1-pairNo+eps),'all'));
+g_loss=-.5*mean(log(pairNo+eps),'all')+100*mean(abs(y-fakeA); 
 
 end
 %% Generator
@@ -179,7 +185,7 @@ end
 end
 
 function [paramsDis,stDis] = InitializeDis(settings,df)
-paramsDis.CNW1 = dlarray(initializeGaussian([4,4,settings.image_size(3),df]));
+paramsDis.CNW1 = dlarray(initializeGaussian([4,4,settings.image_size(3)+1,df]));
 paramsDis.CNb1 = dlarray(zeros(df,1,'single'));
 paramsDis.CNW2 = dlarray(initializeGaussian([4,4,df,2*df]));
 paramsDis.CNb2 = dlarray(zeros(2*df,1,'single'));
