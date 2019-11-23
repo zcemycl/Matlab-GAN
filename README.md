@@ -18,7 +18,7 @@ To run the following codes, users should have the following packages,
 + Pix2Pix [[code]](https://github.com/zcemycl/Matlab-GAN/blob/master/Pix2Pix/PIX2PIX.m) [[paper]](https://arxiv.org/abs/1611.07004)
 + **W**asserstein **G**enerative **A**dversarial **N**etwork (WGAN) [[code]](https://github.com/zcemycl/Matlab-GAN/blob/master/WGAN/WGAN.m) [[paper]](https://arxiv.org/abs/1701.07875)
 + **S**emi-Supervised **G**enerative **A**dversarial **N**etwork (SGAN) [[code]](https://github.com/zcemycl/Matlab-GAN/blob/master/SGAN/SGAN.m) [[paper]](https://arxiv.org/abs/1606.01583)
-+ CycleGAN [[paper]](https://arxiv.org/abs/1703.10593)
++ CycleGAN [[code]](https://github.com/zcemycl/Matlab-GAN/blob/master/CycleGAN/CycleGAN.m) [[paper]](https://arxiv.org/abs/1703.10593)
 + DiscoGAN [[paper]](https://arxiv.org/abs/1703.05192)
 
 ## Outputs
@@ -27,5 +27,5 @@ GAN <br>-Generator, Discriminator|  LSGAN <br>-Least Squares Loss | DCGAN <br>-D
 <img src="https://github.com/zcemycl/Matlab-GAN/blob/master/GAN/GANmnist.gif" width="200" > |<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/LSGAN/LSGANresult.jpg" width="200" >|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/DCGAN/DCGANmnist.gif" width="200" >|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/CGAN/CGANmnist.gif" width="200" >
 ACGAN <br>-Classification|InfoGAN <br>-Continuous, Discrete Codes|AAE <br>-Encoder, Decoder, Discriminator|Pix2Pix <br>-Pair and Segments checking <br>-Decovolution and Skip Connections
 <img src="https://github.com/zcemycl/Matlab-GAN/blob/master/ACGAN/ACGANresult.jpg" width="200"> |<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/InfoGAN/InfoGANmnist.gif" width="200" >|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/AAE/AAEmnist.gif" width="200">|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/Pix2Pix/p2pfacade.gif" width="200">
-WGAN |SGAN|CycleGAN <br>-Instance Normalization|DiscoGAN
+WGAN |SGAN|CycleGAN <br>-Instance Normalization <br>-Mutli-agent Learning|DiscoGAN
 <img src="https://github.com/zcemycl/Matlab-GAN/blob/master/WGAN/resultepoch7.jpg" width="200">|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/SGAN/SGANepoch7.jpg" width="200">||
