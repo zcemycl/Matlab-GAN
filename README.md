@@ -17,7 +17,7 @@ To run the following codes, users should have the following packages,
 + **A**dversarial **A**uto**E**ncoder (AAE) [[code]](https://github.com/zcemycl/Matlab-GAN/blob/master/AAE/AAE.m) [[paper]](https://arxiv.org/abs/1511.05644)
 + Pix2Pix [[code]](https://github.com/zcemycl/Matlab-GAN/blob/master/Pix2Pix/PIX2PIX.m) [[paper]](https://arxiv.org/abs/1611.07004)
 + **W**asserstein **G**enerative **A**dversarial **N**etwork (WGAN) [[code]](https://github.com/zcemycl/Matlab-GAN/blob/master/WGAN/WGAN.m) [[paper]](https://arxiv.org/abs/1701.07875)
-+ **S**emi-Supervised **G**enerative **A**dversarial **N**etwork (SGAN) [[paper]](https://arxiv.org/abs/1606.01583)
++ **S**emi-Supervised **G**enerative **A**dversarial **N**etwork (SGAN) [[code]](https://github.com/zcemycl/Matlab-GAN/blob/master/SGAN/SGAN.m) [[paper]](https://arxiv.org/abs/1606.01583)
 + CycleGAN [[paper]](https://arxiv.org/abs/1703.10593)
 + DiscoGAN [[paper]](https://arxiv.org/abs/1703.05192)
 
