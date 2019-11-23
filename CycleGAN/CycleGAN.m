@@ -23,7 +23,7 @@ paramsDB = InitializeDis(settings,df);
 avgG.DA = []; avgGS.DA = []; avgG.DB = []; avgGS.DB = []; 
 avgG.GAB = []; avgGS.GAB = []; avgG.GBA = []; avgGS.GBA = [];
 numIterations = floor(size(trainA,4)/settings.batch_size);
-out = false; epoch = 0; global_iter = 0;
+out = false; epoch = 0; global_iter = 0; count = 1;
 while ~out
     tic; 
     shuffleid = randperm(size(trainA,4));
@@ -66,19 +66,21 @@ while ~out
             progressplot(APlot,BPlot,paramsGAB,paramsGBA)
         end
         
-%             if i==1 || rem(i,200)==0
-%                 h = gcf;
-%                 % Capture the plot as an image 
-%                 frame = getframe(h); 
-%                 im = frame2im(frame); 
-%                 [imind,cm] = rgb2ind(im,256); 
-%                 % Write to the GIF File 
-%                 if epoch == 0
-%                   imwrite(imind,cm,'p2pfacade.gif','gif', 'Loopcount',inf); 
-%                 else 
-%                   imwrite(imind,cm,'p2pfacade.gif','gif','WriteMode','append'); 
-%                 end 
-%             end
+        if rem(global_iter,count^2)==0 || rem(global_iter,200)==0
+            h = gcf;
+            % Capture the plot as an image 
+            frame = getframe(h); 
+            im = frame2im(frame); 
+            [imind,cm] = rgb2ind(im,256); 
+            % Write to the GIF File 
+            if count == 1
+              imwrite(imind,cm,'CycleGAN.gif','gif', 'Loopcount',inf); 
+            else 
+              imwrite(imind,cm,'CycleGAN.gif','gif','WriteMode','append'); 
+            end 
+            
+            count = count+1;
+        end
     
     end
 
