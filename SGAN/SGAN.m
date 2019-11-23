@@ -56,7 +56,9 @@ numIterations = floor(size(trainX,4)/settings.batch_size);
 out = false; epoch = 0; global_iter = 0;
 while ~out
     tic; 
-    trainXshuffle = trainX(:,:,:,randperm(size(trainX,4)));
+    shuffleid = randperm(size(trainX,4));
+    trainXshuffle = trainX(:,:,:,shuffleid);
+    trainYshuffle = trainY(shuffleid);
     fprintf('Epoch %d\n',epoch) 
     for i=1:numIterations
         global_iter = global_iter+1;
@@ -64,22 +66,23 @@ while ~out
             settings.batch_size]),'CB');
         idx = (i-1)*settings.batch_size+1:i*settings.batch_size;
         XBatch=gpdl(single(trainXshuffle(:,:,:,idx)),'SSCB');
+        YBatch=gpdl(single(trainYshuffle(idx)),'B');
 
         [GradGen,GradDis,stGen,stDis] = ...
-                dlfeval(@modelGradients,XBatch,noise,...
+                dlfeval(@modelGradients,XBatch,YBatch,noise,...
                 paramsGen,paramsDis,stGen,stDis);
 
         % Update Discriminator network parameters
         [paramsDis,avgG.Dis,avgGS.Dis] = ...
             adamupdate(paramsDis, GradDis, ...
             avgG.Dis, avgGS.Dis, global_iter, ...
-            settings.lrD, settings.beta1, settings.beta2);
+            settings.lr, settings.beta1, settings.beta2);
 
         % Update Generator network parameters
         [paramsGen,avgG.Gen,avgGS.Gen] = ...
             adamupdate(paramsGen, GradGen, ...
             avgG.Gen, avgGS.Gen, global_iter, ...
-            settings.lrG, settings.beta1, settings.beta2);
+            settings.lr, settings.beta1, settings.beta2);
         
         if i==1 || rem(i,20)==0
             progressplot(paramsGen,stGen,settings);
@@ -95,6 +98,18 @@ while ~out
     end    
 end
 %% Helper Functions
+%% one hot encoding
+function ohe = onehotencoding(labels,numLabels)
+numBatch = length(labels);
+ohe = zeros(numLabels,numBatch);
+
+for i = 1:numBatch
+    ohe(labels(i)+1,i)=1;
+end
+ohe(1:10,:) = 5/8*ohe(1:10,:);
+ohe(end,:) = 1/16*ohe(end,:);
+
+end
 %% preprocess
 function x = preprocess(x)
 x = double(x)/255;
@@ -120,31 +135,41 @@ end
 function [dly,st] = Generator(dlx,params,st)
 % fully connected
 dly = fullyconnect(dlx,params.FCW1,params.FCb1);
-dly = leakyrelu(dly,0.2);
+dly = relu(dly);
 % transposed convolution
 dly = gpdl(reshape(dly,7,7,128,[]),'SSCB');
+if isempty(st.BN1)
+    [dly,st.BN1.mu,st.BN1.sig] = batchnorm(dly,...
+        params.BNo1,params.BNs1,'MeanDecay',0.8);
+else
+    [dly,st.BN1.mu,st.BN1.sig] = batchnorm(dly,params.BNo1,...
+        params.BNs1,st.BN1.mu,st.BN1.sig,...
+        'MeanDecay',.8);
+end
 dly = dltranspconv(dly,params.TCW1,params.TCb1,...
     'Stride',2,'Cropping','same');
-% if isempty(st.BN1)
-%     [dly,st.BN1.mu,st.BN1.sig] = batchnorm(dly,...
-%         params.BNo1,params.BNs1,'MeanDecay',0.8);
-% else
-%     [dly,st.BN1.mu,st.BN1.sig] = batchnorm(dly,params.BNo1,...
-%         params.BNs1,st.BN1.mu,st.BN1.sig,...
-%         'MeanDecay',.8);
-% end
-dly = leakyrelu(dly,0.2);
+dly = relu(dly);
+if isempty(st.BN2)
+    [dly,st.BN2.mu,st.BN2.sig] = batchnorm(dly,...
+        params.BNo2,params.BNs2,'MeanDecay',0.8);
+else
+    [dly,st.BN2.mu,st.BN2.sig] = batchnorm(dly,params.BNo2,...
+        params.BNs2,st.BN2.mu,st.BN2.sig,...
+        'MeanDecay',.8);
+end
+
 dly = dltranspconv(dly,params.TCW2,params.TCb2,...
     'Stride',2,'Cropping','same');
-% if isempty(st.BN2)
-%     [dly,st.BN2.mu,st.BN2.sig] = batchnorm(dly,...
-%         params.BNo2,params.BNs2,'MeanDecay',0.8);
-% else
-%     [dly,st.BN2.mu,st.BN2.sig] = batchnorm(dly,params.BNo2,...
-%         params.BNs2,st.BN2.mu,st.BN2.sig,...
-%         'MeanDecay',.8);
-% end
-dly = leakyrelu(dly,0.2);
+dly = relu(dly);
+if isempty(st.BN3)
+    [dly,st.BN3.mu,st.BN3.sig] = batchnorm(dly,...
+        params.BNo3,params.BNs3,'MeanDecay',0.8);
+else
+    [dly,st.BN3.mu,st.BN3.sig] = batchnorm(dly,params.BNo3,...
+        params.BNs3,st.BN3.mu,st.BN3.sig,...
+        'MeanDecay',.8);
+end
+
 dly = dlconv(dly,params.CNW1,params.CNb1,...
             'Padding','same');
 % tanh
@@ -161,40 +186,32 @@ dly = dropout(dly,.25);
 %2
 dly = dlconv(dly,params.CNW2,params.CNb2,...
             'Stride',2,'Padding','same');
-% if isempty(st.BN1)
-%     [dly,st.BN1.mu,st.BN1.sig] = batchnorm(dly,...
-%         params.BNo1,params.BNs1,'MeanDecay',0.8);
-% else
-%     [dly,st.BN1.mu,st.BN1.sig] = batchnorm(dly,params.BNo1,...
-%         params.BNs1,st.BN1.mu,st.BN1.sig,...
-%         'MeanDecay',0.8);
-% end
 dly = leakyrelu(dly,0.2);
 dly = dropout(dly,.25);
+if isempty(st.BN1)
+    [dly,st.BN1.mu,st.BN1.sig] = batchnorm(dly,...
+        params.BNo1,params.BNs1,'MeanDecay',0.8);
+else
+    [dly,st.BN1.mu,st.BN1.sig] = batchnorm(dly,params.BNo1,...
+        params.BNs1,st.BN1.mu,st.BN1.sig,...
+        'MeanDecay',0.8);
+end
 %3
 dly = dlconv(dly,params.CNW3,params.CNb3,...
             'Stride',2,'Padding','same');
-% if isempty(st.BN2)
-%     [dly,st.BN2.mu,st.BN2.sig] = batchnorm(dly,...
-%         params.BNo2,params.BNs2,'MeanDecay',0.8);
-% else
-%     [dly,st.BN2.mu,st.BN2.sig] = batchnorm(dly,params.BNo2,...
-%         params.BNs2,st.BN2.mu,st.BN2.sig,...
-%         'MeanDecay',0.8);
-% end
 dly = leakyrelu(dly,0.2);
 dly = dropout(dly,.25);
+if isempty(st.BN2)
+    [dly,st.BN2.mu,st.BN2.sig] = batchnorm(dly,...
+        params.BNo2,params.BNs2,'MeanDecay',0.8);
+else
+    [dly,st.BN2.mu,st.BN2.sig] = batchnorm(dly,params.BNo2,...
+        params.BNs2,st.BN2.mu,st.BN2.sig,...
+        'MeanDecay',0.8);
+end
 %4
 dly = dlconv(dly,params.CNW4,params.CNb4,...
             'Stride',1,'Padding','same');
-% if isempty(st.BN3)
-%     [dly,st.BN3.mu,st.BN3.sig] = batchnorm(dly,...
-%         params.BNo3,params.BNs3,'MeanDecay',0.8);
-% else
-%     [dly,st.BN3.mu,st.BN3.sig] = batchnorm(dly,params.BNo3,...
-%         params.BNs3,st.BN3.mu,st.BN3.sig,...
-%         'MeanDecay',0.8);
-% end
 dly = leakyrelu(dly,0.2);
 dly = dropout(dly,.25);
 
@@ -202,18 +219,27 @@ dly = dropout(dly,.25);
 dly = gpdl(reshape(dly,4*4*256,[]),'CB');
 dly = fullyconnect(dly,params.FCW1,params.FCb1);
 % sigmoid
-dly = sigmoid(dly);
+dly(1,:) = sigmoid(dly(1,:));
+% softmax
+dly(2:end,:) = softmax(dly(2:end,:));
 end
 %% modelGradients
-function [GradGen,GradDis,stGen,stDis]=modelGradients(x,z,paramsGen,...
+function [GradGen,GradDis,stGen,stDis]=modelGradients(x,y,z,paramsGen,...
     paramsDis,stGen,stDis)
 [fake_images,stGen] = Generator(z,paramsGen,stGen);
 d_output_real = Discriminator(x,paramsDis,stDis);
 [d_output_fake,stDis] = Discriminator(fake_images,paramsDis,stDis);
+labels_real = onehotencoding(y,11);
+labels_fake = onehotencoding(10*ones(length(y),1),11);
 
 % Loss due to true or not
-d_loss = -mean(.9*log(d_output_real+eps)+log(1-d_output_fake+eps));
-g_loss = -mean(log(d_output_fake+eps));
+dlossreal=-mean(log(d_output_real(1,:)+eps)+...
+    labels_real.*log(d_output_real(2:end,:)+eps),'all');
+dlossfake=-mean(log(1-d_output_fake(1,:)+eps)+...
+    labels_fake.*log(d_output_fake(2:end,:)+eps),'all');
+d_loss = .5*(dlossreal+dlossfake);
+g_loss=-mean(log(d_output_fake(1,:)+eps)+...
+    labels_real.*log(d_output_fake(2:end,:)+eps),'all');
 
 % For each network, calculate the gradients with respect to the loss.
 GradGen = dlgradient(g_loss,paramsGen,'RetainData',true);
