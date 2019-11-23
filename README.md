@@ -28,4 +28,4 @@ GAN <br>-Generator, Discriminator|  LSGAN <br>-Least Squares Loss | DCGAN <br>-D
 ACGAN <br>-Classification|InfoGAN <br>-Continuous, Discrete Codes|AAE <br>-Encoder, Decoder, Discriminator|Pix2Pix <br>-Pair and Segments checking <br>-Decovolution and Skip Connections
 <img src="https://github.com/zcemycl/Matlab-GAN/blob/master/ACGAN/ACGANresult.jpg" width="200"> |<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/InfoGAN/InfoGANmnist.gif" width="200" >|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/AAE/AAEmnist.gif" width="200">|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/Pix2Pix/p2pfacade.gif" width="200">
 WGAN <br>-Energy-based Loss|SGAN|CycleGAN|DiscoGAN
-<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/WGAN/resultepoch4.jpg" width="200">|||
+<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/WGAN/resultepoch7.jpg" width="200">|||
