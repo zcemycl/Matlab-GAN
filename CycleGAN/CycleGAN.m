@@ -1,5 +1,5 @@
 clear all; close all; clc;
-%% Pixels-to-Pixels
+%% Cycle-GAN
 %% Load Data
 load('AppleOrange.mat')
 trainA = preprocess(Alist);
