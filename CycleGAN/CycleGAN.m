@@ -65,6 +65,20 @@ while ~out
             BPlot = gpdl(trainB(:,:,:,idxPlot),'SSCB');
             progressplot(APlot,BPlot,paramsGAB,paramsGBA)
         end
+        
+%             if i==1 || rem(i,200)==0
+%                 h = gcf;
+%                 % Capture the plot as an image 
+%                 frame = getframe(h); 
+%                 im = frame2im(frame); 
+%                 [imind,cm] = rgb2ind(im,256); 
+%                 % Write to the GIF File 
+%                 if epoch == 0
+%                   imwrite(imind,cm,'p2pfacade.gif','gif', 'Loopcount',inf); 
+%                 else 
+%                   imwrite(imind,cm,'p2pfacade.gif','gif','WriteMode','append'); 
+%                 end 
+%             end
     
     end
 
