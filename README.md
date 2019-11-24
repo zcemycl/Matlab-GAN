@@ -42,4 +42,13 @@ DiscoGAN|SRGAN||
 - J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, andL. Fei-Fei, “ImageNet: A Large-Scale Hierarchical Image Database,” inCVPR09, 2009. [Apple2Orange (ImageNet)]
 - R. Tyleček and R. Šára, “Spatial pattern templates forrecognition of objects with regular structure,” inProc.GCPR, (Saarbrucken, Germany), 2013. [Facade]
 - Z. Liu, P. Luo, X. Wang, and X. Tang, “Deep learn-ing face attributes in the wild,” inProceedings of In-ternational Conference on Computer Vision (ICCV),December 2015. [CelebA]
-
+- Goodfellow, Ian J. et al. “Generative Adversarial Networks.” ArXiv abs/1406.2661 (2014): n. pag. (GAN)
+- Radford, Alec et al. “Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks.” CoRR abs/1511.06434 (2015): n. pag. (DCGAN)
+- Denton, Emily L. et al. “Semi-Supervised Learning with Context-Conditional Generative Adversarial Networks.” ArXiv abs/1611.06430 (2017): n. pag. (CGAN)
+- Odena, Augustus et al. “Conditional Image Synthesis with Auxiliary Classifier GANs.” ICML (2016). (ACGAN)
+- Chen, Xi et al. “InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets.” NIPS (2016). (InfoGAN)
+- Makhzani, Alireza et al. “Adversarial Autoencoders.” ArXiv abs/1511.05644 (2015): n. pag. (AAE)
+- Isola, Phillip et al. “Image-to-Image Translation with Conditional Adversarial Networks.” 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR) (2016): 5967-5976. (Pix2Pix)
+- J.-Y. Zhu, T. Park, P. Isola, and A. A. Efros, “Unpairedimage-to-image translation using cycle-consistent ad-versarial networks,” 2017. (CycleGAN)
+- Arjovsky, Martín et al. “Wasserstein GAN.” ArXiv abs/1701.07875 (2017): n. pag. (WGAN)
+- Odena, Augustus. “Semi-Supervised Learning with Generative Adversarial Networks.” ArXiv abs/1606.01583 (2016): n. pag. (SGAN)
