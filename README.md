@@ -7,6 +7,12 @@ To run the following codes, users should have the following packages,
 - Deep Learning Toolbox
 - Parallel Computing Toolbox (optional for GPU usage)
 
+## Datasets
+- [Facade Dataset](http://cmp.felk.cvut.cz/~tylecr1/facade/)
+- [Apple2Orange Dataset](http://www.image-net.org/)
+- [CelebA Dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html)
+- [Mnist Dataset](http://yann.lecun.com/exdb/mnist/)
+
 ## Table of Contents
 + **G**enerative **A**dversarial **N**etwork (GAN) [[code]](https://github.com/zcemycl/Matlab-GAN/blob/master/GAN/GAN.m) [[paper]](https://arxiv.org/abs/1406.2661) 
 + **L**east **S**quares **G**enerative **A**dversarial **N**etwork (LSGAN) [[code]](https://github.com/zcemycl/Matlab-GAN/blob/master/LSGAN/LSGAN.m) [[paper]](https://arxiv.org/abs/1611.04076)
@@ -30,3 +36,10 @@ ACGAN <br>-Classification|InfoGAN mnist <br>-Continuous, Discrete Codes|AAE <br>
 WGAN |SGAN|CycleGAN <br>-Instance Normalization <br>-Mutli-agent Learning|InfoGAN CelebA
 <img src="https://github.com/zcemycl/Matlab-GAN/blob/master/WGAN/resultepoch7.jpg" width="200">|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/SGAN/SGANepoch7.jpg" width="200">|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/CycleGAN/CycleGAN.gif" width="200">|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/InfoGAN/InfoGANcelebA.gif" width="200">
 DiscoGAN|SRGAN||
+
+## References
+- Y. LeCun and C. Cortes, “MNIST handwritten digitdatabase,” 2010. [MNIST]
+- J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, andL. Fei-Fei, “ImageNet: A Large-Scale Hierarchical Image Database,” inCVPR09, 2009. [Apple2Orange (ImageNet)]
+- R. Tyleček and R. Šára, “Spatial pattern templates forrecognition of objects with regular structure,” inProc.GCPR, (Saarbrucken, Germany), 2013. [Facade]
+- Z. Liu, P. Luo, X. Wang, and X. Tang, “Deep learn-ing face attributes in the wild,” inProceedings of In-ternational Conference on Computer Vision (ICCV),December 2015. [CelebA]
+
