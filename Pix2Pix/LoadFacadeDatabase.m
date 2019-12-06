@@ -20,3 +20,6 @@ for i = 1:228
     jpglist = cat(4,jpglist,im2double(imj));
     pnglist = cat(4,pnglist,im2double(imp));
 end
+
+save('ImgLib.mat','jpglist')
+save('LatCode.mat','pnglist')
