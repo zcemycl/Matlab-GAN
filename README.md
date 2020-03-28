@@ -30,11 +30,11 @@ To run the following codes, users should have the following packages,
 ## Outputs
 GAN <br>-Generator, Discriminator|  LSGAN <br>-Least Squares Loss | DCGAN <br>-Deep Convolutional Layer | CGAN <br>-Condition Embedding
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
-<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/GAN/GANmnist.gif" width="200" > |<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/LSGAN/LSGANresult.jpg" width="200" >|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/DCGAN/DCGANmnist.gif" width="200" >|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/CGAN/CGANmnist.gif" width="200" >
+<img src="GAN/GANmnist.gif" width="200" > |<img src="LSGAN/LSGANresult.jpg" width="200" >|<img src="DCGAN/DCGANmnist.gif" width="200" >|<img src="CGAN/CGANmnist.gif" width="200" >
 ACGAN <br>-Classification|InfoGAN mnist <br>-Continuous, Discrete Codes|AAE <br>-Encoder, Decoder, Discriminator|Pix2Pix <br>-Pair and Segments checking <br>-Decovolution and Skip Connections
-<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/ACGAN/ACGANresult.jpg" width="200"> |<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/InfoGAN/InfoGANmnist.gif" width="200" >|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/AAE/AAEmnist.gif" width="200">|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/Pix2Pix/p2pfacade.gif" width="200">
+<img src="ACGAN/ACGANresult.jpg" width="200"> |<img src="InfoGAN/InfoGANmnist.gif" width="200" >|<img src="AAE/AAEmnist.gif" width="200">|<img src="Pix2Pix/p2pfacade.gif" width="200">
 WGAN |SGAN|CycleGAN <br>-Instance Normalization <br>-Mutli-agent Learning|InfoGAN CelebA
-<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/WGAN/resultepoch7.jpg" width="200">|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/SGAN/SGANepoch7.jpg" width="200">|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/CycleGAN/CycleGAN.gif" width="200">|<img src="https://github.com/zcemycl/Matlab-GAN/blob/master/InfoGAN/InfoGANcelebA.gif" width="200">
+<img src="WGAN/resultepoch7.jpg" width="200">|<img src="SGAN/SGANepoch7.jpg" width="200">|<img src="CycleGAN/CycleGAN.gif" width="200">|<img src="InfoGAN/InfoGANcelebA.gif" width="200">
 DiscoGAN|SRGAN||
 
 ## References
