@@ -35,7 +35,6 @@ ACGAN <br>-Classification|InfoGAN mnist <br>-Continuous, Discrete Codes|AAE <br>
 <img src="ACGAN/ACGANresult.jpg" width="200"> |<img src="InfoGAN/InfoGANmnist.gif" width="200" >|<img src="AAE/AAEmnist.gif" width="200">|<img src="Pix2Pix/p2pfacade.gif" width="200">
 WGAN |SGAN|CycleGAN <br>-Instance Normalization <br>-Mutli-agent Learning|InfoGAN CelebA
 <img src="WGAN/resultepoch7.jpg" width="200">|<img src="SGAN/SGANepoch7.jpg" width="200">|<img src="CycleGAN/CycleGAN.gif" width="200">|<img src="InfoGAN/InfoGANcelebA.gif" width="200">
-DiscoGAN|SRGAN||
 
 ## References
 - Y. LeCun and C. Cortes, “MNIST handwritten digitdatabase,” 2010. [MNIST]
