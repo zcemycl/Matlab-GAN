@@ -4,6 +4,6 @@ authors:
   - family-names: Leung
     given-names: Yui Chun
 title: "Matlab-GAN"
-version: 0.0.1
+version: 1.0.1
 date-released:  2019-11-20
 repository-code: "https://github.com/zcemycl/Matlab-GAN"
